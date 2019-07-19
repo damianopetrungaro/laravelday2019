@@ -1,0 +1,14 @@
+includes:
+  - vendor/phpstan/phpstan/conf/config.levelmax.neon
+  - vendor/jangregor/phpstan-prophecy/src/extension.neon
+  - vendor/nunomaduro/larastan/extension.neon
+
+
+parameters:
+  ignoreErrors:
+    -
+        message: '_Parameter \#\d{0,5} \$\w+ of class [a-zA-Z\\]+ constructor expects DateTimeImmutable, DateTimeImmutable\|false given\._'
+        path: %currentWorkingDirectory%/app/
+    -
+        message: '_Access to an undefined property Illuminate\\Foundation\\Testing\\TestResponse::\$headers\._'
+        path: %currentWorkingDirectory%/tests/Feature/PlaceOrderAPITest.php

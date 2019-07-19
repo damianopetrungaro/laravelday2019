@@ -1,0 +1,57 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Installing PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.3'
+
+      - name: Install deps
+        run: composer i
+
+      - name: Add .env
+        run: cp .env.example .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Check code style
+        run: php vendor/bin/php-cs-fixer fix --dry-run
+
+      - name: Check code quality
+        run: composer analyse
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Installing PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.3'
+
+      - name: Install deps
+        run: composer i
+
+      - name: Add .env
+        run: cp .env.example .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run tests
+        run: composer tests
