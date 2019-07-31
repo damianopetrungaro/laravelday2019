@@ -1,5 +1,11 @@
 <?php
 
+use OrderService\Events\OrderWasPlaced;
+use OrderService\Serializers\EventSerializer;
+use OrderService\Serializers\OrderWasPlacedSerializer;
+use Spatie\EventProjector\HandleStoredEventJob;
+use Spatie\EventProjector\Models\StoredEvent;
+
 return [
 
     /*
@@ -32,7 +38,7 @@ return [
      * A queue is used to guarantee that all events get passed to the projectors in
      * the right order. Here you can set of the name of the queue.
      */
-    'queue' => env('EVENT_PROJECTOR_QUEUE_NAME', null),
+    'queue' => env('EVENT_PROJECTOR_QUEUE_NAME'),
 
     /*
      * When a Projector or Reactor throws an exception the event Projectionist can catch it
@@ -46,28 +52,37 @@ return [
      * can change this to a class of your own. The only restriction is that
      * it should extend \Spatie\EventProjector\Models\StoredEvent.
      */
-    'stored_event_model' => \Spatie\EventProjector\Models\StoredEvent::class,
+    'stored_event_model' => StoredEvent::class,
 
     /*
      * This class is responsible for handling stored events. To add extra behaviour you
      * can change this to a class of your own. The only restriction is that
      * it should extend \Spatie\EventProjector\HandleDomainEventJob.
      */
-    'stored_event_job' => \Spatie\EventProjector\HandleStoredEventJob::class,
+    'stored_event_job' => HandleStoredEventJob::class,
 
     /*
      * Similar to Relation::morphMap() you can define which alias responds to which
      * event class. This allows you to change the namespace or classnames
      * of your events but still handle older events correctly.
      */
-    'event_class_map' => [],
+    'event_class_map' => [
+        'order_was_placed' => OrderWasPlaced::class,
+    ],
+
+    /*
+     * TODO: Comment here...
+     */
+    'event_class_serializer' => [
+        OrderWasPlacedSerializer::class => OrderWasPlaced::class,
+    ],
 
     /*
      * This class is responsible for serializing events. By default an event will be serialized
      * and stored as json. You can customize the class name. A valid serializer
      * should implement Spatie\EventProjector\EventSerializers\Serializer.
      */
-    'event_serializer' => \Spatie\EventProjector\EventSerializers\JsonEventSerializer::class,
+    'event_serializer' => EventSerializer::class,
 
     /*
      * When replaying events, potentially a lot of events will have to be retrieved.
