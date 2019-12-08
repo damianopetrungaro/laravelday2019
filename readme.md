@@ -76,6 +76,8 @@ IMPORTANTE!
 
 La sequenza degli oridni è importante! Pensate a possibili scenario!
 
+Passo passo: https://github.com/damianopetrungaro/laravelday2019-step
+
 (1)[]
 Provate ad integrare tramite un pub/sub l'aggiunta nel database libri e customers.
 
